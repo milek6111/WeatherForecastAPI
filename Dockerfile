@@ -1,5 +1,5 @@
-# Wybierz obraz bazowy
-FROM maven:3.8.4-openjdk-22 AS builder
+
+FROM adoptopenjdk:22-jdk-hotspot AS builder
 
 
 WORKDIR /app
@@ -16,7 +16,7 @@ COPY src ./src
 RUN mvn package -DskipTests
 
 
-FROM openjdk:22
+FROM adoptopenjdk:22-jdk-hotspot-slim
 
 
 COPY --from=builder /app/target/*.jar /app/app.jar
