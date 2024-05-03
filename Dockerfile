@@ -16,7 +16,7 @@ COPY src ./src
 RUN mvn package -DskipTests
 
 
-FROM adoptopenjdk:22-jdk-hotspot-slim
+FROM adoptopenjdk:22-jdk-hotspot
 
 
 COPY --from=builder /app/target/*.jar /app/app.jar
