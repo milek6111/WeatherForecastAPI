@@ -14,7 +14,7 @@ RUN mvn dependency:go-offline
 COPY src ./src
 
 
-RUN mvn package -DskipTests
+RUN mvn package -DskipTests -Dmaven.compiler.source=22 -Dmaven.compiler.target=22
 
 
 FROM adoptopenjdk
