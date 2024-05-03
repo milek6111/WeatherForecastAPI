@@ -61,7 +61,8 @@ public class WeatherService {
         final double power = 2.5;
         final double efficiency = 0.2;
         for(var duration : daily.get("sunshine_duration")){
-            double generated_energy = power * (Double) duration * efficiency;
+            double duration_in_hours = (Double)duration/3600;
+            double generated_energy = power * duration_in_hours * efficiency;
             energyValues.add(generated_energy);
         }
 

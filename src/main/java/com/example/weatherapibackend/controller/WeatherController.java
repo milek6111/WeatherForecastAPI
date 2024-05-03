@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 //test url
 //http://localhost:8080/api/v1/forecast?latitude=1.02&longitude=23.55
@@ -27,11 +30,15 @@ public class WeatherController {
     @GetMapping("/forecast")
     ResponseEntity<?> getForecast(@NonNull @RequestParam Double latitude,@NonNull @RequestParam Double longitude){
         if(latitude < -90 || latitude > 90){
-            return new ResponseEntity<>("Latitude must be between -90 and 90",HttpStatus.valueOf(400));
+            Map<String,String> info = new HashMap<>();
+            info.put("error","Latitude must be between -90 and 90");
+            return new ResponseEntity<>(info,HttpStatus.BAD_REQUEST);
         }
 
         if(longitude < -180 || longitude > 180){
-            return new ResponseEntity<>("Longitude must be between -180 and 180",HttpStatus.valueOf(400));
+            Map<String,String> info = new HashMap<>();
+            info.put("error","Longitude must be between -180 and 180");
+            return new ResponseEntity<>(info,HttpStatus.BAD_REQUEST);
         }
 
         var result = weatherService.fetchData(latitude,longitude);
