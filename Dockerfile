@@ -1,6 +1,5 @@
 
-FROM adoptopenjdk:22-jdk-hotspot AS builder
-
+FROM adoptopenjdk AS builder
 
 WORKDIR /app
 
@@ -16,7 +15,7 @@ COPY src ./src
 RUN mvn package -DskipTests
 
 
-FROM adoptopenjdk:22-jdk-hotspot
+FROM adoptopenjdk
 
 
 COPY --from=builder /app/target/*.jar /app/app.jar
