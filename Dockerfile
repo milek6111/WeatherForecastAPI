@@ -1,33 +1,19 @@
-
-FROM adoptopenjdk AS builder
-
-RUN apt-get update && \
-    apt-get install -y wget && \
-    wget https://apache.osuosl.org/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.tar.gz && \
-    tar -xf apache-maven-3.8.5-bin.tar.gz && \
-    mv apache-maven-3.8.5 /opt/maven && \
-    ln -s /opt/maven/bin/mvn /usr/local/bin/mvn && \
-    rm -f apache-maven-3.8.5-bin.tar.gz
+FROM eclipse-temurin:17-jdk-jammy AS builder
 
 WORKDIR /app
 
-
-COPY pom.xml .
-
-RUN mvn dependency:go-offline
-
+COPY .mvn/ .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline
 
 COPY src ./src
 
+RUN ./mvnw package -DskipTests
 
-RUN mvn package -DskipTests -Dmaven.compiler.source=22 -Dmaven.compiler.target=22
+FROM eclipse-temurin:17-jdk-jammy
 
-
-FROM adoptopenjdk
-
+WORKDIR /app
 
 COPY --from=builder /app/target/*.jar /app/app.jar
 
-
 CMD ["java", "-jar", "/app/app.jar"]
-
