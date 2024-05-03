@@ -14,6 +14,8 @@ FROM eclipse-temurin:17-jdk-jammy
 
 WORKDIR /app
 
+EXPOSE 8080
+
 COPY --from=builder /app/target/*.jar /app/app.jar
 
-CMD ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["java", "-jar", "/app/app.jar"]
