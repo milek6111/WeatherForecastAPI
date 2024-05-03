@@ -1,7 +1,13 @@
 
 FROM adoptopenjdk AS builder
 
-RUN apt-get update && apt-get install -y maven
+RUN apt-get update && \
+    apt-get install -y wget && \
+    wget https://apache.osuosl.org/maven/maven-3/3.8.5/binaries/apache-maven-3.8.5-bin.tar.gz && \
+    tar -xf apache-maven-3.8.5-bin.tar.gz && \
+    mv apache-maven-3.8.5 /opt/maven && \
+    ln -s /opt/maven/bin/mvn /usr/local/bin/mvn && \
+    rm -f apache-maven-3.8.5-bin.tar.gz
 
 WORKDIR /app
 
